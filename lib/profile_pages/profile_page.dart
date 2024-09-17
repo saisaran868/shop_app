@@ -54,11 +54,13 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-  logout(context)async{
+  logout(context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    Navigator.of(context).pushReplacement(
+    await prefs.clear(); // Make sure to await the clear operation
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const LoginPage()),
+          (Route<dynamic> route) => false, // Remove all routes
     );
   }
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/cart_pages/cart_page.dart';
 import 'package:shop_app/cart_pages/cart_provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -44,7 +45,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("Details"),),
-
+     actions: [
+       IconButton(onPressed: (){
+         Navigator.of(context).pushReplacement(
+           MaterialPageRoute(builder:
+               (context)=>const CartPage(),),);
+       },
+         icon: const Icon(Icons.shopping_cart_rounded),
+       ),
+     ],
       ),
       body: Column(
         children: [

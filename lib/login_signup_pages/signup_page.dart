@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/home_page.dart';
+import 'package:shop_app/login_signup_pages/login_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../toast_messages/toast_message.dart';
 
@@ -15,6 +17,8 @@ class _SignupPageState extends State<SignupPage> {
   bool isLoading = false;
   bool _passwordSignup = true;
   bool _confrimPasswordSignup = true;
+  bool isTermsChecked = false;
+  final Uri terms = Uri.parse('https://flutter.dev');
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confrimPasswordController = TextEditingController();
@@ -25,6 +29,7 @@ class _SignupPageState extends State<SignupPage> {
       style: BorderStyle.solid,
     ),
   );
+   
   final errorBorder =const  OutlineInputBorder(
     borderSide: BorderSide(
       color: Colors.red,
@@ -78,7 +83,7 @@ class _SignupPageState extends State<SignupPage> {
                    color: Colors.black,
                  ),
                ),
-       const SizedBox(height: 30,),
+       const SizedBox(height: 15,),
        
                 TextFormField(
                 decoration:  InputDecoration(
@@ -106,7 +111,7 @@ class _SignupPageState extends State<SignupPage> {
                     color: Colors.black,
                   ),
                ),
-       const SizedBox(height: 30,),
+       const SizedBox(height: 15,),
        
         TextFormField(
                 decoration:  InputDecoration(
@@ -134,8 +139,34 @@ class _SignupPageState extends State<SignupPage> {
             color: Colors.black,
           ),
                ),
-       const SizedBox(height: 30,),
+       const SizedBox(height: 5,),
+Row(
+  children: [
+    Checkbox(value: isTermsChecked, onChanged:(value){
+      setState(() {
+        isTermsChecked =value!;
+      });
+    }
+    ),
 
+     InkWell(
+       onTap: (){
+       launchUrl(terms);
+
+       },
+       child: const Text("Terms and Conditions",
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            color: Colors.blue,
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+          ),
+          ),
+     ),
+
+  ],
+),
+          const  SizedBox(height: 5,),
            SizedBox(
              height: 55,
              width: double.infinity, // Make button full-width
@@ -162,6 +193,22 @@ class _SignupPageState extends State<SignupPage> {
                ),
              ),
            ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+                },
+                child: const Text(
+                  "Already have an account? Login",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+
             ],
            ),
          ),
@@ -186,6 +233,10 @@ class _SignupPageState extends State<SignupPage> {
       showToast("Password doesn't match.");
       return;
     }
+    if(isTermsChecked != true){
+      showToast("Accept Terms and Conditions");
+      return;
+    }
     if(isLoading){
       return;
     }
@@ -198,9 +249,16 @@ class _SignupPageState extends State<SignupPage> {
     setState(() {
       isLoading = false;
     });
+    showToast("Account Created Successfully");
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const HomePage()),
     );
 
   }
+  Future<void> _launchUrl (Uri uri) async {
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $uri');
+    }
+  }
 }
+

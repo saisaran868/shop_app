@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
 
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'Password',
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 5),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(
+                        Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) => const SignupPage()),
                         );
                       },
@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  void login(BuildContext context) async{
+  void login(context) async{
     String email = emailController.text;
     String password = passwordController.text;
     RegExp emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
