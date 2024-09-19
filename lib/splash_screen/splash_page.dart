@@ -16,6 +16,7 @@ class _SplashPageState extends State<SplashPage> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+
     checkLogin(context);
   }
   @override
